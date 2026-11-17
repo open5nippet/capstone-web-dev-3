@@ -2,6 +2,10 @@
 
 CampusCare enables students to submit and track campus complaints while administrators can review, filter, and resolve them.
 
+## Live deployment
+
+The application is live at [CampusCare on Render](https://capstone-web-dev-3.onrender.com/).
+
 ## Technology
 
 HTML, CSS, vanilla JavaScript, Node.js, Express, MongoDB/Mongoose, JWT, and bcryptjs.
@@ -30,3 +34,18 @@ Public registration never creates administrators. Create a demo admin account se
 ```powershell
 $env:ADMIN_NAME='Campus Admin'; $env:ADMIN_EMAIL='admin@example.com'; $env:ADMIN_PASSWORD='a-long-demo-password'; npm run seed:admin
 ```
+
+## Deployment
+
+CampusCare is deployed as a Node.js/Express Web Service on Render. MongoDB Atlas provides the hosted database.
+
+The Render service uses these environment variables, configured in Render rather than committed to this repository:
+
+```text
+MONGODB_URI
+JWT_SECRET
+JWT_EXPIRES_IN=1d
+NODE_ENV=production
+```
+
+For the hosted service to access MongoDB Atlas, Atlas Network Access must allow the Render deployment. The database connection string and JWT secret are never committed to GitHub.
