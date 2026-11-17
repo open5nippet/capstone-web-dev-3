@@ -1,0 +1,13 @@
+import express from 'express';
+import helmet from 'helmet';
+import morgan from 'morgan';
+import path from 'path';
+import { fileURLToPath } from 'url';
+import healthRoutes from './routes/health.routes.js';
+import authRoutes from './routes/auth.routes.js';
+import complaintRoutes from './routes/complaint.routes.js';
+import { errorHandler, notFound } from './middleware/error.middleware.js';
+const app = express(); const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
+app.use(helmet({ contentSecurityPolicy: false })); app.use(morgan('dev')); app.use(express.json()); app.use(express.static(path.join(root, 'public')));
+app.use('/api/health', healthRoutes); app.use('/api/auth', authRoutes); app.use('/api/complaints', complaintRoutes);
+app.use(notFound); app.use(errorHandler); export default app;

@@ -1,0 +1,1428 @@
+{
+  "project": {
+    "name": "CampusCare",
+    "full_title": "CampusCare - Campus Complaint & Issue Management System",
+    "version": "1.0.0",
+    "status": "planning_and_initial_implementation",
+    "project_type": "semester_full_stack_web_development_project",
+    "institution_context": "K.R. Mangalam University",
+    "course_context": {
+      "program": "B.Tech CSE",
+      "course_name": "Web Dev - III (Node.js & Express Backend)",
+      "course_code": "ETCCWD303",
+      "lecture_tutorial_practical": "3-0-2",
+      "credits": 4,
+      "contact_hours": 45,
+      "prerequisites": [
+        "Basic knowledge of HTML",
+        "Basic knowledge of CSS",
+        "Basic knowledge of JavaScript",
+        "Web Development I and II (frontend and introductory backend concepts)"
+      ],
+      "source_note": "Syllabus facts in this specification were read from the uploaded three-page syllabus image. The PDF is image-based, so text extraction returned no text. The visible syllabus outline is represented below; the cropped lab-experiment table at the bottom of the supplied image was not used to invent additional requirements."
+    },
+    "one_sentence_description": "A web application where students submit campus-related complaints and track their progress, while authorized administrators review, update, and resolve those complaints.",
+    "problem_statement": "Students need a centralized way to report university-related problems and know whether those problems are being addressed. Administrators need one place to review, organize, prioritize, and update reported issues.",
+    "solution_statement": "CampusCare provides student and administrator interfaces connected to a Node.js and Express backend and a MongoDB database. Students can create and track their own complaints; administrators can manage all complaints and record status updates and remarks.",
+    "primary_goals": [
+      "Provide a clear form for students to submit campus complaints.",
+      "Allow students to view and track the status of their own complaints.",
+      "Allow administrators to view and manage complaints from all students.",
+      "Keep complaint records in a persistent database.",
+      "Protect accounts and restrict actions according to the logged-in user's role.",
+      "Demonstrate the frontend-to-backend-to-database flow expected in a full-stack project."
+    ]
+  },
+  "team": {
+    "team_size": 4,
+    "member_names": "Not supplied yet. Replace the role labels with the actual names before submission.",
+    "members": [
+      {
+        "member_id": "M1",
+        "display_name": "Member 1 - Team Leader (you)",
+        "primary_role": "Frontend developer and integration lead",
+        "responsibilities": [
+          "Coordinate the team and maintain the task board and project schedule.",
+          "Build the public homepage, navigation, and student-facing pages using HTML, CSS, and JavaScript.",
+          "Coordinate the frontend-to-API integration with the backend member.",
+          "Maintain the GitHub repository, review pull requests, and resolve integration conflicts with the team.",
+          "Check that all modules follow the agreed file names, API contracts, and UI conventions.",
+          "Prepare the final integrated demo with contributions from every member."
+        ],
+        "main_deliverables": [
+          "public/index.html and shared navigation",
+          "student-facing HTML/CSS/JavaScript pages",
+          "frontend API integration",
+          "GitHub integration and release checklist"
+        ]
+      },
+      {
+        "member_id": "M2",
+        "display_name": "Member 2 - Backend developer",
+        "primary_role": "Node.js and Express API developer",
+        "responsibilities": [
+          "Set up and configure the Express application and server startup.",
+          "Create route files, controllers, middleware integration, and centralized error handling.",
+          "Implement complaint CRUD endpoints according to the agreed API specification.",
+          "Use correct HTTP methods and status codes and keep responses consistent.",
+          "Test API endpoints with Postman and document request and response examples.",
+          "Coordinate backend integration with the database and authentication member."
+        ],
+        "main_deliverables": [
+          "src/app.js and src/server.js",
+          "src/routes/ and src/controllers/ complaint endpoints",
+          "centralized error handling",
+          "Postman collection or API test notes"
+        ]
+      },
+      {
+        "member_id": "M3",
+        "display_name": "Member 3 - Database and authentication developer",
+        "primary_role": "MongoDB, Mongoose, and authentication developer",
+        "responsibilities": [
+          "Connect the application to MongoDB using Mongoose.",
+          "Create and validate the User and Complaint schemas with references and timestamps.",
+          "Implement registration and login with password hashing using bcrypt or bcryptjs.",
+          "Implement JWT creation and verification and authentication middleware.",
+          "Implement role checks so that student and administrator permissions are enforced by the backend.",
+          "Keep secrets in environment variables and ensure that public registration cannot create administrator accounts."
+        ],
+        "main_deliverables": [
+          "src/config/db.js",
+          "src/models/User.js and src/models/Complaint.js",
+          "src/controllers/auth.controller.js and auth routes",
+          "src/middleware/auth.middleware.js and role.middleware.js",
+          "safe environment-variable example"
+        ]
+      },
+      {
+        "member_id": "M4",
+        "display_name": "Member 4 - Admin interface and quality assurance",
+        "primary_role": "Admin dashboard developer and QA/documentation coordinator",
+        "responsibilities": [
+          "Build the administrator dashboard using HTML, CSS, and JavaScript.",
+          "Create complaint tables, category/status filters, status controls, and admin remarks interface.",
+          "Build dashboard statistic cards using data returned by the backend.",
+          "Prepare test scenarios and coordinate Jest/Supertest tests with the backend member.",
+          "Record bugs, verify fixes, and check responsive behavior and basic accessibility.",
+          "Help prepare the README, screenshots, user guide, and presentation/demo checklist."
+        ],
+        "main_deliverables": [
+          "public/admin-dashboard.html",
+          "admin dashboard CSS and JavaScript",
+          "QA test checklist and bug log",
+          "README sections and demo evidence"
+        ]
+      }
+    ],
+    "shared_responsibilities": [
+      "All four members must understand the complete application flow, not only their assigned module.",
+      "Each member must commit their own work to the shared Git repository.",
+      "Each member must explain their own contribution during the final evaluation.",
+      "Team members must review each other's code and test integrated changes.",
+      "Do not commit .env files, passwords, JWT secrets, or database credentials."
+    ],
+    "team_working_agreement": {
+      "repository_owner": "Decide as a team; preferably the team leader creates the repository and adds all members.",
+      "task_tracking": "Use GitHub Issues or a shared task board. Each task should have an owner, expected output, and completion condition.",
+      "communication": "Agree on one primary group chat and post a short progress update after each work session.",
+      "integration_rule": "Do not overwrite another member's work. Use feature branches and pull requests.",
+      "review_rule": "At least one other member should review a feature before it is merged into the shared development branch."
+    }
+  },
+  "scope": {
+    "mvp_in_scope": [
+      "Public landing page explaining CampusCare.",
+      "Student registration and login.",
+      "Administrator login using an account created through a controlled seed/manual setup process.",
+      "Student dashboard showing the student's own complaints.",
+      "Complaint submission with title, description, category, and optional location.",
+      "Complaint detail view and status tracking.",
+      "Student editing/deletion only while a complaint is in Pending status.",
+      "Admin dashboard showing all complaints.",
+      "Admin filtering by status and category.",
+      "Admin status updates and optional administrative remarks.",
+      "Basic dashboard counts for total, pending, in-progress, resolved, and rejected complaints.",
+      "Input validation, authentication, role-based authorization, and centralized error handling.",
+      "API testing with Postman and automated tests for important backend behavior."
+    ],
+    "explicitly_out_of_scope_for_first_version": [
+      "Payment gateway or fee collection.",
+      "Live chat or real-time messaging.",
+      "SMS, WhatsApp, or email notification delivery.",
+      "Mobile application.",
+      "Complex workflow approvals across several departments.",
+      "Public complaint visibility or public user profiles.",
+      "Mandatory file/image uploads. Add only if the core application is stable and time permits.",
+      "AI categorization, chatbot, or RAG in the initial MVP. These are optional extensions for Unit 4."
+    ],
+    "future_enhancements": [
+      "AI-assisted complaint category suggestion using a Generative AI API.",
+      "RAG-based answers from an approved campus FAQ or policy document collection.",
+      "Email notifications when complaint status changes.",
+      "Image attachment support with file-type and file-size validation.",
+      "Department assignment and complaint priority.",
+      "Complaint activity timeline and admin audit log."
+    ],
+    "scope_control_rule": "Finish and test the MVP before starting any future enhancement. Do not add a new feature unless the team has time to test and document it."
+  },
+  "users_and_permissions": {
+    "roles": [
+      {
+        "role": "student",
+        "description": "A registered student who can submit and track personal complaints.",
+        "permissions": [
+          "Create a complaint.",
+          "View only complaints created by that student.",
+          "View the detail of an owned complaint.",
+          "Edit an owned complaint only when its status is Pending.",
+          "Delete an owned complaint only when its status is Pending.",
+          "Not permitted to change complaint status or admin remarks."
+        ]
+      },
+      {
+        "role": "admin",
+        "description": "An authorized administrator who manages campus complaints.",
+        "permissions": [
+          "View all complaints.",
+          "View complaint details and student-submitted information needed to process the issue.",
+          "Filter and search complaints.",
+          "Change complaint status.",
+          "Add or update an administrative remark.",
+          "View aggregate dashboard statistics.",
+          "Not permitted to create another admin through public registration."
+        ]
+      }
+    ],
+    "authorization_rules": [
+      "The backend must verify the JWT before protected endpoints execute.",
+      "The backend must check the user's role for admin-only endpoints.",
+      "The backend must check complaint ownership for student detail, update, and delete operations.",
+      "Never rely only on hiding frontend buttons for access control.",
+      "Public registration must always assign the student role; admin creation must be controlled by a seed script or direct authorized setup."
+    ]
+  },
+  "functional_requirements": [
+    {
+      "id": "FR-001",
+      "name": "Student registration",
+      "description": "Allow a student to create an account using name, email, and password.",
+      "acceptance_criteria": [
+        "Name, email, and password are required.",
+        "Email is normalized and must be unique.",
+        "Password is stored only as a bcrypt/bcryptjs hash, never as plain text.",
+        "Public registration creates a student role only.",
+        "Invalid input returns a clear validation response."
+      ],
+      "priority": "must_have"
+    },
+    {
+      "id": "FR-002",
+      "name": "Login and authentication",
+      "description": "Authenticate registered users and issue a signed JWT.",
+      "acceptance_criteria": [
+        "Correct credentials allow login.",
+        "Incorrect credentials return a generic authentication error.",
+        "The response does not expose the password hash.",
+        "Protected endpoints reject missing, invalid, or expired tokens."
+      ],
+      "priority": "must_have"
+    },
+    {
+      "id": "FR-003",
+      "name": "Create complaint",
+      "description": "Allow a logged-in student to submit a campus issue.",
+      "acceptance_criteria": [
+        "Title, description, and category are required.",
+        "Location is optional.",
+        "The backend assigns the complaint owner from the authenticated user, not from a client-supplied user ID.",
+        "New complaints start with Pending status.",
+        "Creation time and update time are recorded."
+      ],
+      "priority": "must_have"
+    },
+    {
+      "id": "FR-004",
+      "name": "List complaints",
+      "description": "Return complaints according to the authenticated user's role.",
+      "acceptance_criteria": [
+        "Students receive only their own complaints.",
+        "Admins receive all complaints.",
+        "The endpoint supports optional status and category filters.",
+        "The endpoint uses a consistent JSON response format."
+      ],
+      "priority": "must_have"
+    },
+    {
+      "id": "FR-005",
+      "name": "View complaint details",
+      "description": "Return one complaint to an authorized user.",
+      "acceptance_criteria": [
+        "The complaint ID must be valid.",
+        "A student can access only their own complaint.",
+        "An admin can access any complaint.",
+        "A missing complaint returns HTTP 404."
+      ],
+      "priority": "must_have"
+    },
+    {
+      "id": "FR-006",
+      "name": "Edit complaint",
+      "description": "Allow the complaint owner to edit eligible fields before an administrator begins processing it.",
+      "acceptance_criteria": [
+        "Only the complaint owner can edit it as a student.",
+        "Only Pending complaints can be edited by students.",
+        "The student cannot edit status, owner, or admin remarks.",
+        "Invalid fields are rejected."
+      ],
+      "priority": "must_have"
+    },
+    {
+      "id": "FR-007",
+      "name": "Delete complaint",
+      "description": "Allow the complaint owner to remove an unprocessed complaint.",
+      "acceptance_criteria": [
+        "Only the complaint owner can delete it as a student.",
+        "Only Pending complaints can be deleted by students.",
+        "Deletion returns a clear success response."
+      ],
+      "priority": "should_have"
+    },
+    {
+      "id": "FR-008",
+      "name": "Admin complaint management",
+      "description": "Allow an administrator to process complaints and record status and remarks.",
+      "acceptance_criteria": [
+        "Only admins can use the status update endpoint.",
+        "Status must be one of the allowed values.",
+        "Admin remark is optional and length-limited.",
+        "The system updates the complaint updatedAt timestamp."
+      ],
+      "priority": "must_have"
+    },
+    {
+      "id": "FR-009",
+      "name": "Dashboard statistics",
+      "description": "Show aggregate complaint counts to the administrator.",
+      "acceptance_criteria": [
+        "Only admins can access aggregate statistics.",
+        "Counts match the complaints stored in the database.",
+        "The dashboard handles zero complaints without errors."
+      ],
+      "priority": "should_have"
+    },
+    {
+      "id": "FR-010",
+      "name": "Filtering and search",
+      "description": "Help users locate complaints by status and category, and optionally by title text.",
+      "acceptance_criteria": [
+        "Filters are validated and do not bypass authorization.",
+        "Student filters apply only to the student's own complaints.",
+        "Admin filters apply to the admin's authorized complaint list."
+      ],
+      "priority": "should_have"
+    }
+  ],
+  "non_functional_requirements": [
+    "Usability: pages should have clear labels, helpful validation messages, and consistent navigation.",
+    "Responsive design: the main pages should work on laptop and mobile-sized screens.",
+    "Security: passwords must be hashed; secrets must be stored in environment variables; endpoints must enforce authentication and authorization.",
+    "Maintainability: use separate routes, controllers, models, middleware, and configuration files.",
+    "Reliability: handle invalid requests and database/server errors without crashing the application.",
+    "Performance: use database queries and filters rather than downloading every record when the complaint list grows; pagination can be added after the basic list works.",
+    "Accessibility: use semantic HTML, visible focus states, form labels, and sufficient text contrast.",
+    "Portability: document local setup and deployment configuration in README.md."
+  ],
+  "business_rules": [
+    "New complaints are assigned Pending status by the backend.",
+    "Allowed statuses are Pending, In Progress, Resolved, and Rejected.",
+    "Allowed categories are Classroom, Internet/Wi-Fi, Hostel, Library, Transport, Maintenance, and Other.",
+    "A student can see only their own complaints.",
+    "A student can edit or delete only their own Pending complaints.",
+    "Only an admin can change status or add an admin remark.",
+    "The client must not decide complaint ownership; the authenticated server-side user determines createdBy.",
+    "A public registration request cannot set role to admin."
+  ],
+  "technology_stack": {
+    "frontend": [
+      {
+        "technology": "HTML5",
+        "purpose": "Page structure and forms"
+      },
+      {
+        "technology": "CSS3",
+        "purpose": "Layout, responsive styling, and visual design"
+      },
+      {
+        "technology": "Vanilla JavaScript",
+        "purpose": "Form handling, validation, fetch requests, and dynamic dashboard rendering"
+      }
+    ],
+    "backend": [
+      {
+        "technology": "Node.js",
+        "purpose": "JavaScript runtime for the server"
+      },
+      {
+        "technology": "Express.js",
+        "purpose": "Routing, middleware, REST API, and static frontend serving"
+      },
+      {
+        "technology": "Mongoose",
+        "purpose": "MongoDB schemas, validation, references, and queries"
+      },
+      {
+        "technology": "JWT",
+        "purpose": "Token-based authentication"
+      },
+      {
+        "technology": "bcrypt or bcryptjs",
+        "purpose": "Password hashing and verification"
+      },
+      {
+        "technology": "dotenv",
+        "purpose": "Loading configuration from environment variables"
+      }
+    ],
+    "developer_tools": [
+      {
+        "technology": "Visual Studio Code",
+        "purpose": "Code editor"
+      },
+      {
+        "technology": "Git and GitHub",
+        "purpose": "Version control and team collaboration"
+      },
+      {
+        "technology": "Postman",
+        "purpose": "Manual REST API testing"
+      },
+      {
+        "technology": "MongoDB Compass",
+        "purpose": "Visual inspection of MongoDB data"
+      },
+      {
+        "technology": "Jest and Supertest",
+        "purpose": "Automated unit/integration tests"
+      },
+      {
+        "technology": "Docker and Docker Compose",
+        "purpose": "Containerization learning and repeatable local setup; add after MVP"
+      }
+    ],
+    "deployment_target": {
+      "application_hosting_options_from_syllabus": [
+        "Render",
+        "Vercel",
+        "Railway"
+      ],
+      "recommended_project_arrangement": "Deploy the Express application on a Node.js-capable host such as Render or Railway and use a MongoDB database service. Verify the current provider plan, limits, and deployment instructions before deploying.",
+      "database": "MongoDB Atlas or another MongoDB-compatible hosted database",
+      "note": "The syllabus lists Render, Vercel, and Railway as deployment examples. This specification does not promise that any provider currently offers a free plan."
+    },
+    "frontend_framework_decision": "Use plain HTML, CSS, and JavaScript for the first version. React is intentionally excluded to keep the project aligned with the team's selected frontend and reduce additional learning overhead."
+  },
+  "syllabus_alignment": {
+    "course_perspective": "The course emphasizes hands-on design, development, testing, and deployment of full-stack backend applications; RESTful APIs with Node.js and Express; database integration such as MongoDB; secure authentication; production-ready backend code; Generative AI APIs and RAG; Docker; and cloud deployment.",
+    "course_outcomes": [
+      {
+        "code": "CO1",
+        "statement": "Building server-side applications using Node.js and Express.",
+        "campuscare_evidence": "Express server, modular backend, middleware, and API endpoints."
+      },
+      {
+        "code": "CO2",
+        "statement": "Designing and developing RESTful APIs for web-based solutions.",
+        "campuscare_evidence": "Complaint and authentication REST endpoints using HTTP methods and status codes."
+      },
+      {
+        "code": "CO3",
+        "statement": "Integrating backend systems with databases for data persistence.",
+        "campuscare_evidence": "Mongoose models, MongoDB connection, references, queries, and persistent complaints/users."
+      },
+      {
+        "code": "CO4",
+        "statement": "Implementing authentication, authorization, and middleware in backend applications.",
+        "campuscare_evidence": "JWT verification, bcrypt password hashing, protected routes, and student/admin role middleware."
+      }
+    ],
+    "units": [
+      {
+        "unit": 1,
+        "title": "Foundations of Node.js",
+        "hours": 12,
+        "syllabus_topics": [
+          "Overview of Backend Development and HTTP fundamentals",
+          "Introduction to Node.js and event-driven architecture",
+          "JavaScript for Node: ES6+ syntax, async/await, and modules",
+          "OOP in JavaScript: constructor functions, classes, this, and prototypes",
+          "Core Node.js units/modules: fs, http, path, and url"
+        ],
+        "campuscare_work": [
+          "Understand browser/server/client request-response flow.",
+          "Create the Node.js project and server startup file.",
+          "Use ES modules or CommonJS consistently across the project.",
+          "Use async/await for database and controller operations.",
+          "Use built-in Node modules where appropriate and understand their purpose."
+        ],
+        "evidence_for_evaluation": [
+          "server.js",
+          "app.js",
+          "health endpoint",
+          "team explanation of HTTP and async/await"
+        ]
+      },
+      {
+        "unit": 2,
+        "title": "Express.js and REST API Development",
+        "hours": 10,
+        "syllabus_topics": [
+          "Introduction to Express.js",
+          "Routing: static/dynamic routes and route parameters",
+          "Middleware concepts: built-in, custom, and error-handling",
+          "Controllers, routers, and modular structure for scaling apps",
+          "Express Generator and folder best practices",
+          "REST principles: statelessness, resources, and HTTP verbs",
+          "Full CRUD API: POST and GET; PUT/PATCH and DELETE",
+          "Error handling using try-catch, centralized middleware, and status codes",
+          "Building and testing APIs using Postman"
+        ],
+        "campuscare_work": [
+          "Create separate authentication and complaint routers.",
+          "Create controllers for request handling.",
+          "Use route parameters such as complaint IDs.",
+          "Implement create, read, update, and delete operations.",
+          "Create authentication, role, and error middleware.",
+          "Test endpoints with Postman and record example requests/responses."
+        ],
+        "evidence_for_evaluation": [
+          "src/routes",
+          "src/controllers",
+          "src/middleware",
+          "Postman collection",
+          "CRUD demonstration"
+        ]
+      },
+      {
+        "unit": 3,
+        "title": "Databases, Authentication and Security",
+        "hours": 12,
+        "syllabus_topics": [
+          "Introduction to databases: SQL vs NoSQL and MongoDB setup",
+          "Data modeling with Mongoose or Sequelize",
+          "Schema design, validations, and references",
+          "Querying and populating: find(), populate(), and aggregation basics",
+          "Real-time data flow with full database CRUD integration",
+          "Authentication basics: password hashing with bcrypt",
+          "Token-based authentication: JWT setup, signing, and verification",
+          "Protecting routes with role-based middleware",
+          "Environment variables with dotenv and secret management",
+          "Best practices for securing credentials and APIs"
+        ],
+        "campuscare_work": [
+          "Create User and Complaint Mongoose schemas.",
+          "Reference the complaint creator using a Mongoose ObjectId.",
+          "Use find(), findById(), update operations, and populate() where useful.",
+          "Hash passwords and verify them during login.",
+          "Create and verify JWTs.",
+          "Enforce role and ownership restrictions in backend middleware/controllers.",
+          "Load secrets and connection strings from environment variables."
+        ],
+        "evidence_for_evaluation": [
+          "src/config/db.js",
+          "src/models",
+          "auth routes",
+          "protected endpoint tests",
+          "MongoDB Compass screenshots"
+        ]
+      },
+      {
+        "unit": 4,
+        "title": "AI, Design and Deployment",
+        "hours": 11,
+        "syllabus_topics": [
+          "Low-Level Design (LLD): modularity, SOLID principles, and code reuse",
+          "Automated testing: writing basic unit and integration tests with Jest or Mocha",
+          "Integrating Generative AI APIs, for example OpenAI or Hugging Face",
+          "Retrieval-Augmented Generation (RAG) for smarter backend features",
+          "Docker basics: Dockerfile, image, container, and Docker Compose",
+          "Deployment: cloud hosting on Render, Vercel, or Railway",
+          "Wrap-up and final review"
+        ],
+        "campuscare_work": [
+          "Keep routes, controllers, models, services, and middleware separated.",
+          "Write automated tests for health, authentication, and complaint permissions.",
+          "Complete deployment and document environment variables.",
+          "After the MVP is stable, optionally add AI category suggestions or an FAQ RAG assistant.",
+          "Add Dockerfile and Compose configuration as a later learning milestone."
+        ],
+        "evidence_for_evaluation": [
+          "tests",
+          "README architecture notes",
+          "Dockerfile and compose file if completed",
+          "deployed application URL",
+          "optional AI/RAG feature demonstration"
+        ]
+      }
+    ],
+    "learning_experiences_to_include": [
+      "Hands-on lab sessions: REST APIs, CRUD, middleware, and authentication workflows using Node.js and Express.",
+      "Code walkthroughs and debugging: explain routing, middleware flow, error handling, and debugging techniques.",
+      "Project-based learning: build the system in stages from routing to database integration and deployment.",
+      "Live demonstrations: Postman, MongoDB Compass, JWT, and session management concepts.",
+      "Peer reviews: review backend structure, security, and API design.",
+      "Outside-class practice: GitHub collaboration, cloud deployment, environment variables, and basic CI/CD concepts.",
+      "Portfolio building: publish a README and API documentation with the project."
+    ]
+  },
+  "data_model": {
+    "database_name": "campuscare",
+    "collections": [
+      {
+        "name": "users",
+        "model_file": "src/models/User.js",
+        "fields": [
+          {
+            "name": "name",
+            "type": "String",
+            "required": true,
+            "rules": "Trim whitespace; reasonable maximum length."
+          },
+          {
+            "name": "email",
+            "type": "String",
+            "required": true,
+            "rules": "Lowercase, trimmed, unique, and valid email format."
+          },
+          {
+            "name": "password",
+            "type": "String",
+            "required": true,
+            "rules": "Store only a bcrypt/bcryptjs hash; never return it in API responses."
+          },
+          {
+            "name": "role",
+            "type": "String",
+            "required": true,
+            "default": "student",
+            "allowed_values": [
+              "student",
+              "admin"
+            ]
+          },
+          {
+            "name": "createdAt",
+            "type": "Date",
+            "required": true,
+            "rules": "Use Mongoose timestamps."
+          },
+          {
+            "name": "updatedAt",
+            "type": "Date",
+            "required": true,
+            "rules": "Use Mongoose timestamps."
+          }
+        ],
+        "indexes": [
+          "Unique index on email"
+        ],
+        "notes": [
+          "Never accept admin role from public registration.",
+          "Consider adding a student registration number only if the faculty requires it; it is not necessary for the MVP."
+        ]
+      },
+      {
+        "name": "complaints",
+        "model_file": "src/models/Complaint.js",
+        "fields": [
+          {
+            "name": "title",
+            "type": "String",
+            "required": true,
+            "rules": "Trim whitespace; suggested length 5-100 characters."
+          },
+          {
+            "name": "description",
+            "type": "String",
+            "required": true,
+            "rules": "Trim whitespace; suggested length 10-2000 characters."
+          },
+          {
+            "name": "category",
+            "type": "String",
+            "required": true,
+            "allowed_values": [
+              "Classroom",
+              "Internet/Wi-Fi",
+              "Hostel",
+              "Library",
+              "Transport",
+              "Maintenance",
+              "Other"
+            ]
+          },
+          {
+            "name": "location",
+            "type": "String",
+            "required": false,
+            "rules": "Optional; suggested maximum length 120 characters."
+          },
+          {
+            "name": "status",
+            "type": "String",
+            "required": true,
+            "default": "Pending",
+            "allowed_values": [
+              "Pending",
+              "In Progress",
+              "Resolved",
+              "Rejected"
+            ]
+          },
+          {
+            "name": "createdBy",
+            "type": "ObjectId reference to User",
+            "required": true,
+            "rules": "Set from authenticated user on the server."
+          },
+          {
+            "name": "adminRemark",
+            "type": "String",
+            "required": false,
+            "rules": "Only admins can set/update; suggested maximum length 1000 characters."
+          },
+          {
+            "name": "createdAt",
+            "type": "Date",
+            "required": true,
+            "rules": "Use Mongoose timestamps."
+          },
+          {
+            "name": "updatedAt",
+            "type": "Date",
+            "required": true,
+            "rules": "Use Mongoose timestamps."
+          }
+        ],
+        "indexes": [
+          "Index createdBy for student complaint queries",
+          "Index status and category for admin filtering"
+        ],
+        "relationships": [
+          "Each complaint belongs to one user through createdBy."
+        ]
+      }
+    ]
+  },
+  "api_design": {
+    "base_path": "/api",
+    "response_convention": {
+      "success_example": {
+        "success": true,
+        "message": "Human-readable message",
+        "data": {}
+      },
+      "error_example": {
+        "success": false,
+        "message": "Human-readable error message"
+      },
+      "rule": "Use the same outer response shape across endpoints. Do not include password hashes, secrets, or stack traces in client responses."
+    },
+    "authentication": "Protected endpoints require a valid JWT. The server must identify the user from the verified token. Do not trust a user ID or role supplied in the request body.",
+    "endpoints": [
+      {
+        "method": "GET",
+        "path": "/health",
+        "access": "public",
+        "purpose": "Health check for server availability."
+      },
+      {
+        "method": "POST",
+        "path": "/auth/register",
+        "access": "public",
+        "purpose": "Register a student account.",
+        "body_fields": [
+          "name",
+          "email",
+          "password"
+        ]
+      },
+      {
+        "method": "POST",
+        "path": "/auth/login",
+        "access": "public",
+        "purpose": "Authenticate a user and issue a JWT.",
+        "body_fields": [
+          "email",
+          "password"
+        ]
+      },
+      {
+        "method": "GET",
+        "path": "/auth/me",
+        "access": "authenticated",
+        "purpose": "Return safe details of the currently authenticated user."
+      },
+      {
+        "method": "GET",
+        "path": "/complaints",
+        "access": "student_or_admin",
+        "purpose": "List complaints. Students receive their own; admins receive all. Optional query filters: status, category, page, limit."
+      },
+      {
+        "method": "POST",
+        "path": "/complaints",
+        "access": "student",
+        "purpose": "Create a complaint.",
+        "body_fields": [
+          "title",
+          "description",
+          "category",
+          "location"
+        ]
+      },
+      {
+        "method": "GET",
+        "path": "/complaints/:id",
+        "access": "owner_or_admin",
+        "purpose": "Get one complaint after ownership/role verification."
+      },
+      {
+        "method": "PATCH",
+        "path": "/complaints/:id",
+        "access": "owner_if_pending",
+        "purpose": "Edit allowed complaint fields while status is Pending.",
+        "body_fields": [
+          "title",
+          "description",
+          "category",
+          "location"
+        ]
+      },
+      {
+        "method": "DELETE",
+        "path": "/complaints/:id",
+        "access": "owner_if_pending",
+        "purpose": "Delete a complaint while status is Pending."
+      },
+      {
+        "method": "PATCH",
+        "path": "/complaints/:id/status",
+        "access": "admin",
+        "purpose": "Update status and optional admin remark.",
+        "body_fields": [
+          "status",
+          "adminRemark"
+        ]
+      },
+      {
+        "method": "GET",
+        "path": "/complaints/stats",
+        "access": "admin",
+        "purpose": "Return total and per-status complaint counts."
+      }
+    ],
+    "http_status_guidance": {
+      "200": "Successful read or update.",
+      "201": "Resource created.",
+      "400": "Invalid request data or malformed identifier.",
+      "401": "Missing or invalid authentication.",
+      "403": "Authenticated user lacks permission.",
+      "404": "Requested resource does not exist or is not available to that user, according to the chosen privacy policy.",
+      "409": "Conflict, for example duplicate email.",
+      "500": "Unexpected server error."
+    }
+  },
+  "ui_pages": [
+    {
+      "file": "public/index.html",
+      "name": "Landing page",
+      "audience": "public",
+      "elements": [
+        "CampusCare introduction",
+        "How it works",
+        "Login and registration links"
+      ]
+    },
+    {
+      "file": "public/login.html",
+      "name": "Login page",
+      "audience": "public",
+      "elements": [
+        "Email field",
+        "Password field",
+        "Login button",
+        "Validation and error messages"
+      ]
+    },
+    {
+      "file": "public/register.html",
+      "name": "Registration page",
+      "audience": "public",
+      "elements": [
+        "Name field",
+        "Email field",
+        "Password field",
+        "Confirm password field (frontend convenience only)",
+        "Register button"
+      ]
+    },
+    {
+      "file": "public/student-dashboard.html",
+      "name": "Student dashboard",
+      "audience": "student",
+      "elements": [
+        "Welcome message",
+        "Submit complaint form or link",
+        "Personal complaint list",
+        "Status labels",
+        "View/edit/delete actions when permitted",
+        "Logout"
+      ]
+    },
+    {
+      "file": "public/admin-dashboard.html",
+      "name": "Admin dashboard",
+      "audience": "admin",
+      "elements": [
+        "Summary cards",
+        "All complaints table",
+        "Status/category filters",
+        "Complaint detail view",
+        "Status update control",
+        "Admin remark field",
+        "Logout"
+      ]
+    }
+  ],
+  "folder_structure": [
+    "CampusCare/",
+    "  public/",
+    "    index.html",
+    "    login.html",
+    "    register.html",
+    "    student-dashboard.html",
+    "    admin-dashboard.html",
+    "    css/styles.css",
+    "    css/auth.css",
+    "    css/dashboard.css",
+    "    js/main.js",
+    "    js/api.js",
+    "    js/auth.js",
+    "    js/student.js",
+    "    js/admin.js",
+    "    assets/",
+    "  src/",
+    "    config/db.js",
+    "    models/User.js",
+    "    models/Complaint.js",
+    "    controllers/auth.controller.js",
+    "    controllers/complaint.controller.js",
+    "    routes/health.routes.js",
+    "    routes/auth.routes.js",
+    "    routes/complaint.routes.js",
+    "    middleware/auth.middleware.js",
+    "    middleware/role.middleware.js",
+    "    middleware/error.middleware.js",
+    "    services/complaint.service.js",
+    "    utils/generateToken.js",
+    "    app.js",
+    "    server.js",
+    "  tests/",
+    "  .env",
+    "  .env.example",
+    "  .gitignore",
+    "  package.json",
+    "  README.md"
+  ],
+  "environment_configuration": {
+    "file_to_create_locally": ".env",
+    "example_file_to_commit": ".env.example",
+    "example_variables": {
+      "PORT": "3000",
+      "MONGODB_URI": "mongodb://127.0.0.1:27017/campuscare",
+      "JWT_SECRET": "replace_with_a_long_random_secret",
+      "JWT_EXPIRES_IN": "1d",
+      "NODE_ENV": "development"
+    },
+    "security_rules": [
+      "Commit .env.example but never commit .env.",
+      "Use a long, randomly generated JWT secret outside example files.",
+      "Do not paste real credentials into source code, GitHub issues, screenshots, or chat messages.",
+      "Use a separate database and secret for deployment.",
+      "Never log passwords, JWTs, or database connection strings."
+    ]
+  },
+  "recommended_dependencies": {
+    "runtime": [
+      {
+        "package": "express",
+        "purpose": "HTTP server and API framework"
+      },
+      {
+        "package": "mongoose",
+        "purpose": "MongoDB object modelling"
+      },
+      {
+        "package": "dotenv",
+        "purpose": "Environment variable loading"
+      },
+      {
+        "package": "bcryptjs",
+        "purpose": "Password hashing"
+      },
+      {
+        "package": "jsonwebtoken",
+        "purpose": "JWT signing and verification"
+      },
+      {
+        "package": "helmet",
+        "purpose": "Common HTTP security headers"
+      },
+      {
+        "package": "morgan",
+        "purpose": "HTTP request logging during development"
+      }
+    ],
+    "development": [
+      {
+        "package": "nodemon",
+        "purpose": "Restart server when source files change"
+      },
+      {
+        "package": "jest",
+        "purpose": "Automated test runner"
+      },
+      {
+        "package": "supertest",
+        "purpose": "HTTP integration testing"
+      }
+    ],
+    "note": "Install packages only when the matching milestone begins. If the provided starter project already declares some dependencies, check package.json before installing duplicates. Use one module system consistently (CommonJS or ES modules)."
+  },
+  "implementation_roadmap": [
+    {
+      "milestone": 1,
+      "name": "Project setup and initial frontend/server",
+      "tasks": [
+        "Extract and open the CampusCare starter folder in VS Code.",
+        "Run npm install.",
+        "Create .env by copying .env.example.",
+        "Run npm run dev.",
+        "Open the homepage at http://localhost:3000.",
+        "Check GET /api/health in a browser or Postman.",
+        "Create the shared GitHub repository and invite all team members."
+      ],
+      "completion_conditions": [
+        "Server starts without errors.",
+        "Homepage loads.",
+        "Health endpoint returns JSON.",
+        "All members can clone the repository."
+      ],
+      "syllabus_alignment": [
+        "Unit 1",
+        "Unit 2"
+      ]
+    },
+    {
+      "milestone": 2,
+      "name": "Express fundamentals and REST API structure",
+      "tasks": [
+        "Understand app.js and server.js.",
+        "Create routers for health, authentication, and complaints.",
+        "Create controller files and a consistent JSON response format.",
+        "Add not-found and centralized error middleware.",
+        "Test sample routes in Postman."
+      ],
+      "completion_conditions": [
+        "Routes are separated from controllers.",
+        "HTTP methods and status codes are appropriate.",
+        "Errors return consistent JSON responses."
+      ],
+      "syllabus_alignment": [
+        "Unit 1",
+        "Unit 2"
+      ]
+    },
+    {
+      "milestone": 3,
+      "name": "MongoDB and Mongoose",
+      "tasks": [
+        "Choose local MongoDB or MongoDB Atlas for development.",
+        "Add MONGODB_URI to the local .env file.",
+        "Create the MongoDB connection module.",
+        "Create and validate User and Complaint models.",
+        "Verify stored records using MongoDB Compass."
+      ],
+      "completion_conditions": [
+        "Server connects to MongoDB.",
+        "Models validate required fields.",
+        "A test record can be created and read."
+      ],
+      "syllabus_alignment": [
+        "Unit 3"
+      ]
+    },
+    {
+      "milestone": 4,
+      "name": "Authentication and authorization",
+      "tasks": [
+        "Implement student registration.",
+        "Hash passwords with bcryptjs.",
+        "Implement login and JWT creation.",
+        "Create JWT verification middleware.",
+        "Create student/admin role middleware.",
+        "Create a controlled method to provision an admin account.",
+        "Test unauthorized and forbidden requests."
+      ],
+      "completion_conditions": [
+        "Registration and login work.",
+        "Password is stored as a hash.",
+        "Protected routes reject invalid tokens.",
+        "Students cannot access admin-only endpoints."
+      ],
+      "syllabus_alignment": [
+        "Unit 3"
+      ]
+    },
+    {
+      "milestone": 5,
+      "name": "Complaint CRUD APIs",
+      "tasks": [
+        "Implement complaint creation.",
+        "Implement role-aware complaint listing.",
+        "Implement complaint detail retrieval.",
+        "Implement student update and delete restrictions.",
+        "Implement admin status and remark updates.",
+        "Test ownership, validation, and invalid IDs in Postman."
+      ],
+      "completion_conditions": [
+        "Core CRUD works with MongoDB.",
+        "Students cannot read or edit another student's complaint.",
+        "Only admins can update status."
+      ],
+      "syllabus_alignment": [
+        "Unit 2",
+        "Unit 3"
+      ]
+    },
+    {
+      "milestone": 6,
+      "name": "Frontend and API integration",
+      "tasks": [
+        "Complete login and registration pages.",
+        "Create one shared frontend API helper.",
+        "Connect forms to the backend.",
+        "Build student complaint submission and tracking.",
+        "Build admin complaint list, filters, and status controls.",
+        "Display loading, empty, success, and error states."
+      ],
+      "completion_conditions": [
+        "A student can register, log in, submit, and track a complaint through the UI.",
+        "An admin can log in and process that complaint through the UI."
+      ],
+      "syllabus_alignment": [
+        "Full-stack capstone and project-based learning"
+      ]
+    },
+    {
+      "milestone": 7,
+      "name": "Testing, security review, and peer review",
+      "tasks": [
+        "Write tests for health and authentication endpoints.",
+        "Write tests for complaint ownership and role restrictions.",
+        "Test missing fields, duplicate email, invalid token, invalid ID, and database errors.",
+        "Review environment variable handling and .gitignore.",
+        "Review frontend responsiveness and form accessibility.",
+        "Conduct a member-to-member code review."
+      ],
+      "completion_conditions": [
+        "Critical routes have repeatable tests.",
+        "No secrets are committed.",
+        "Authorization tests pass.",
+        "Known bugs are recorded and resolved or documented."
+      ],
+      "syllabus_alignment": [
+        "Unit 2",
+        "Unit 3",
+        "Unit 4"
+      ]
+    },
+    {
+      "milestone": 8,
+      "name": "Deployment and project documentation",
+      "tasks": [
+        "Prepare production environment variables.",
+        "Deploy the Node.js/Express application to a chosen host.",
+        "Connect to the hosted MongoDB database.",
+        "Verify health endpoint and core workflows on the deployed URL.",
+        "Write README with setup, architecture, APIs, team roles, and screenshots.",
+        "Prepare final presentation and demo script."
+      ],
+      "completion_conditions": [
+        "A working deployment URL is available if hosting is required.",
+        "README contains reproducible setup instructions.",
+        "Demo can be completed from a clean browser session."
+      ],
+      "syllabus_alignment": [
+        "Unit 4"
+      ]
+    },
+    {
+      "milestone": 9,
+      "name": "Optional Unit 4 extension",
+      "tasks": [
+        "Choose one small AI feature, such as suggested complaint category, only after MVP is stable.",
+        "If a RAG feature is selected, use a small approved campus FAQ/policy knowledge base.",
+        "Keep API keys on the backend and never expose them in browser JavaScript.",
+        "Add Dockerfile and Docker Compose configuration if time permits.",
+        "Test and document the extension."
+      ],
+      "completion_conditions": [
+        "The core application remains functional.",
+        "AI output is clearly labeled as a suggestion and does not make administrative decisions.",
+        "Secrets are protected.",
+        "Docker instructions are reproducible if Docker is included."
+      ],
+      "syllabus_alignment": [
+        "Unit 4 - optional extension"
+      ]
+    }
+  ],
+  "local_setup_guide": {
+    "assumed_environment": "Windows laptop with VS Code and Node.js installed; commands are shown for Command Prompt and PowerShell where they differ.",
+    "steps": [
+      {
+        "step": 1,
+        "action": "Download and extract the CampusCare starter folder."
+      },
+      {
+        "step": 2,
+        "action": "Open the extracted CampusCare folder in VS Code using File > Open Folder."
+      },
+      {
+        "step": 3,
+        "action": "Open VS Code Terminal > New Terminal and confirm the terminal is in the project folder."
+      },
+      {
+        "step": 4,
+        "command": "npm install",
+        "action": "Install dependencies declared in package.json."
+      },
+      {
+        "step": 5,
+        "command_cmd": "copy .env.example .env",
+        "command_powershell": "Copy-Item .env.example .env",
+        "action": "Create a local environment file. Edit the values for the database and JWT secret."
+      },
+      {
+        "step": 6,
+        "command": "npm run dev",
+        "action": "Start the development server using the package script."
+      },
+      {
+        "step": 7,
+        "url": "http://localhost:3000",
+        "action": "Open the homepage in a browser."
+      },
+      {
+        "step": 8,
+        "url": "http://localhost:3000/api/health",
+        "action": "Verify that the health endpoint returns a success JSON response."
+      }
+    ],
+    "expected_first_milestone_result": {
+      "server_message": "CampusCare is running at http://localhost:3000",
+      "health_response": {
+        "success": true,
+        "message": "CampusCare backend is running"
+      }
+    },
+    "troubleshooting": [
+      {
+        "problem": "npm is not recognized",
+        "check": "Verify Node.js and npm installation and restart the terminal."
+      },
+      {
+        "problem": "Port 3000 is already in use",
+        "check": "Stop the other process or change PORT in .env."
+      },
+      {
+        "problem": "MongoDB connection fails",
+        "check": "Confirm MongoDB is running or the Atlas URI and network access are configured. The server should report a clear connection error."
+      },
+      {
+        "problem": "Module syntax error",
+        "check": "Use the same CommonJS or ES module syntax consistently and verify package.json configuration."
+      },
+      {
+        "problem": "Changes do not appear",
+        "check": "Confirm nodemon is running, save the file, and refresh the browser."
+      }
+    ]
+  },
+  "git_and_collaboration": {
+    "recommended_branches": [
+      "main - stable submission-ready code",
+      "develop - integrated team work",
+      "feature/member1-frontend",
+      "feature/member2-backend",
+      "feature/member3-auth-database",
+      "feature/member4-admin-qa"
+    ],
+    "workflow": [
+      "Clone the shared repository.",
+      "Pull the latest develop branch before starting a task.",
+      "Create a feature branch for the task.",
+      "Make small, meaningful commits.",
+      "Run the relevant tests and check the application locally.",
+      "Push the branch and open a pull request into develop.",
+      "Ask another member to review the changes.",
+      "Resolve feedback and merge only after checks pass.",
+      "Merge tested develop code into main for stable milestones/releases."
+    ],
+    "commit_message_examples": [
+      "feat: add student complaint form",
+      "feat: add complaint creation API",
+      "fix: validate complaint status updates",
+      "test: add authorization tests",
+      "docs: update API documentation"
+    ],
+    "gitignore_must_include": [
+      "node_modules/",
+      ".env",
+      "coverage/",
+      "*.log",
+      ".DS_Store"
+    ]
+  },
+  "testing_plan": {
+    "manual_postman_scenarios": [
+      "Health endpoint returns success.",
+      "Student registration succeeds with valid details.",
+      "Duplicate email registration is rejected.",
+      "Login succeeds with correct credentials and fails with incorrect credentials.",
+      "Protected endpoint rejects a missing token.",
+      "Student can create a complaint.",
+      "Student sees only their own complaints.",
+      "Student cannot access another student's complaint by changing the ID.",
+      "Student cannot update status or admin remark.",
+      "Student can edit/delete an owned Pending complaint.",
+      "Student cannot edit/delete a complaint after it is no longer Pending.",
+      "Admin can view all complaints and update status.",
+      "Non-admin cannot access admin-only endpoints.",
+      "Invalid category/status and missing required fields are rejected."
+    ],
+    "automated_test_targets": [
+      "Health route response.",
+      "Registration validation and password hashing behavior.",
+      "Login success/failure behavior.",
+      "JWT authentication middleware.",
+      "Role middleware.",
+      "Complaint ownership restrictions.",
+      "Admin-only status update.",
+      "Complaint schema validation."
+    ],
+    "definition_of_done_for_a_feature": [
+      "The agreed behavior is implemented.",
+      "Input validation and error handling are included.",
+      "Authorization is checked on the backend where applicable.",
+      "The feature is tested manually or automatically.",
+      "The code is committed to a feature branch and reviewed.",
+      "The feature is documented if it changes the API or setup."
+    ]
+  },
+  "security_and_quality": {
+    "mandatory_controls": [
+      "Hash passwords with bcrypt/bcryptjs; never store plain-text passwords.",
+      "Use JWT verification middleware for protected routes.",
+      "Check roles and resource ownership on the server.",
+      "Prevent public users from assigning themselves the admin role.",
+      "Validate and sanitize request fields and allowed enum values.",
+      "Keep database URI and JWT secret in environment variables.",
+      "Do not return password hashes, tokens, environment values, or stack traces in error responses.",
+      "Use Helmet and sensible request logging; do not log secrets or credentials.",
+      "Restrict deployed database access and use a separate production secret."
+    ],
+    "student_project_caveat": "This is an educational semester project. A production university deployment would need a fuller security review, secure token storage strategy, audit logging, operational monitoring, backups, and institution-approved data handling."
+  },
+  "documentation_and_submission": {
+    "required_readme_sections": [
+      "Project title and short description",
+      "Problem statement and objectives",
+      "Main features and user roles",
+      "Technology stack",
+      "Application architecture and request flow",
+      "Folder structure",
+      "Database collections and relationships",
+      "API endpoint list with methods and access requirements",
+      "Prerequisites and local installation steps",
+      "Environment variable setup using .env.example",
+      "How to run the application",
+      "How to run tests",
+      "Deployment URL and deployment notes, if deployed",
+      "Team members and individual contributions",
+      "Screenshots of student and admin workflows",
+      "Known limitations and future enhancements"
+    ],
+    "submission_checklist": [
+      "Application starts from the documented setup steps.",
+      "Student registration and login work.",
+      "Student can submit and track a complaint.",
+      "Admin can view and process complaints.",
+      "Role and ownership restrictions are tested.",
+      "MongoDB persistence is demonstrated.",
+      "Postman collection or API test evidence is available.",
+      "Automated tests are included where implemented.",
+      "README and API documentation are complete.",
+      "GitHub repository does not contain .env or credentials.",
+      "Team contributions are documented accurately.",
+      "Final demo and presentation are rehearsed."
+    ],
+    "suggested_demo_sequence": [
+      "Introduce the real campus problem and explain the purpose of CampusCare.",
+      "Show a student registering and logging in.",
+      "Submit a complaint with a category and location.",
+      "Show the complaint in the student's dashboard with Pending status.",
+      "Log in as an administrator and show the same complaint in the admin dashboard.",
+      "Change the status to In Progress and add an admin remark.",
+      "Return to the student view and show the updated status.",
+      "Demonstrate that a student cannot access an admin-only endpoint or another student's complaint.",
+      "Briefly explain the Express routes, middleware, Mongoose models, JWT, and database.",
+      "Show Postman tests, README, GitHub history, and deployment if available."
+    ]
+  },
+  "beginner_learning_rules": [
+    "Build one small feature at a time instead of writing the entire application at once.",
+    "Before using a new package, understand what problem it solves.",
+    "For every backend endpoint, understand the request, route, middleware, controller, model, database operation, and response.",
+    "Test each backend endpoint in Postman before connecting it to the frontend.",
+    "Do not copy code without being able to explain its purpose to another team member.",
+    "Keep a shared notes file for commands, API examples, bugs, and decisions.",
+    "Ask for help with the exact error message and the file or command where it occurs; never share secrets."
+  ],
+  "project_decisions_and_open_items": {
+    "decided": [
+      "Project name is CampusCare.",
+      "The team has four members.",
+      "Learning approach is beginner-friendly with step-by-step explanations.",
+      "Frontend is HTML, CSS, and vanilla JavaScript.",
+      "Backend is Node.js and Express.js.",
+      "Database is MongoDB with Mongoose.",
+      "The MVP supports student and admin roles."
+    ],
+    "to_confirm_with_team_or_faculty": [
+      "Actual names of the four team members.",
+      "Whether the faculty requires a specific database or hosting provider.",
+      "Whether complaint attachments are required. They are excluded from the MVP until confirmed.",
+      "Whether the faculty expects a formal report, presentation, or a specific submission template.",
+      "Whether there is a fixed submission date or marking rubric."
+    ],
+    "assumptions": [
+      "The team can use a local or hosted MongoDB instance for development.",
+      "The administrator account will be provisioned by the team in a controlled way for the demo.",
+      "No real student personal data should be used in screenshots or test data; use fictional sample accounts.",
+      "The project is intended as a semester demonstration and learning exercise, not an official production university complaint system unless separately approved."
+    ]
+  }
+}

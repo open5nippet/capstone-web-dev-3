@@ -1,0 +1,7 @@
+import { request,setSession,getSession } from './api.js';
+const message=document.querySelector('#message');const show=(text,type='error')=>{message.textContent=text;message.className=`notice ${type}`;};
+const requestedRole=new URLSearchParams(location.search).get('role');
+if(requestedRole==='admin'&&document.querySelector('#login-role')){document.querySelector('#login-role').textContent='ADMIN PORTAL';document.querySelector('#login-help').textContent='Sign in with an authorized administrator account.';}
+if(requestedRole==='student'&&document.querySelector('#login-role')){document.querySelector('#login-role').textContent='STUDENT PORTAL';document.querySelector('#login-help').textContent='Sign in to submit and track your own complaints.';}
+if(getSession())location.href=getSession().user.role==='admin'?'admin-dashboard.html':'student-dashboard.html';
+const form=document.querySelector('form');form?.addEventListener('submit',async(event)=>{event.preventDefault();const body=Object.fromEntries(new FormData(form));if(form.id==='register-form'&&body.password!==body.confirmPassword)return show('Passwords do not match.');delete body.confirmPassword;try{const result=await request(form.id==='login-form'?'/auth/login':'/auth/register',{method:'POST',body:JSON.stringify(body)});setSession(result.data);location.href=result.data.user.role==='admin'?'admin-dashboard.html':'student-dashboard.html';}catch(error){show(error.message);}});

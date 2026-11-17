@@ -1,0 +1,5 @@
+export function allowRoles(...roles) {
+  return (req, res, next) => roles.includes(req.user.role)
+    ? next()
+    : res.status(403).json({ success: false, message: 'You do not have permission for this action.' });
+}
